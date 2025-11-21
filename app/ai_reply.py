@@ -13,12 +13,12 @@ CLOSING_SIGNATURE = "जय श्री राम,\nBest regards,\nHarshit's AI
 
 
 class AIReplyGenerator:
-    """AI-powered email reply generator using Google Gemini (clean final version)."""
+    """AI-powered email reply generator using Google Gemini."""
 
     def __init__(
         self,
         api_key: Optional[str] = None,
-        model_name: str = "gemini-1.5-flash",
+        model_name: Optional[str] = None,
         temperature: float = 0.7,
         max_output_tokens: int = 512,
     ):
@@ -26,15 +26,21 @@ class AIReplyGenerator:
         if api_key is None:
             api_key = os.getenv("GEMINI_API_KEY")
 
+        # Model name: env override -> default
+        if model_name is None:
+            # You can override this in .env / Render:
+            # GEMINI_MODEL=gemini-2.5-flash-lite  (or gemini-2.5-flash, gemini-2.0-flash, etc.)
+            model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash-lite")
+
         self.api_key = api_key
         self.model_name = model_name
         self.temperature = temperature
         self.max_output_tokens = max_output_tokens
 
         self._initialized = False
-        self._model = None
+        self._model: Optional[genai.GenerativeModel] = None
 
-        # Fallback templates (used when Gemini key missing)
+        # Fallback templates (used when Gemini key missing or model fails)
         self.templates = {
             "positive": {
                 "high": "Thank you for your positive feedback! I really appreciate your kind words and I'm glad I could help.",
@@ -59,6 +65,7 @@ class AIReplyGenerator:
 
         try:
             genai.configure(api_key=self.api_key)
+            # Old google-generativeai SDK still takes model id as a string
             self._model = genai.GenerativeModel(self.model_name)
             self._initialized = True
             logger.info("Gemini initialized (model=%s)", self.model_name)
@@ -80,8 +87,9 @@ class AIReplyGenerator:
                     "max_output_tokens": self.max_output_tokens,
                 },
             )
-            text = (response.text or "").strip()
+            text = (getattr(response, "text", "") or "").strip()
             if not text:
+                logger.warning("Gemini returned empty text.")
                 return None
             return text
         except Exception as exc:
@@ -91,7 +99,12 @@ class AIReplyGenerator:
     # ------------------------------------------------------------------
     # MAIN: generate reply
     # ------------------------------------------------------------------
-    def generate_reply(self, email: Any, sentiment: str = None, priority: str = None) -> Optional[str]:
+    def generate_reply(
+        self,
+        email: Any,
+        sentiment: str = None,
+        priority: str = None,
+    ) -> Optional[str]:
         subject = getattr(email, "subject", "") or ""
         body = getattr(email, "body", "") or ""
         from_address = getattr(email, "from_address", "") or ""
@@ -108,7 +121,7 @@ class AIReplyGenerator:
             return self._generate_fallback_reply(email, sentiment, priority)
 
         prompt = f"""
-You are an AI email assistant. Read the email and write a clear, professional, **unique** reply.
+You are an AI email assistant. Read the email and write a clear, professional, unique reply.
 
 ### EMAIL DETAILS
 From: {from_address}
@@ -127,9 +140,9 @@ Priority: {priority}
 3. If the email contains questions → answer them clearly.
 4. If it is promotional/spam → politely decline but reference its topic.
 5. Tone rules:
-   - negative + high → empathy + urgency  
-   - negative + medium → calm + reassuring  
-   - neutral → clear + direct  
+   - negative + high → empathy + urgency
+   - negative + medium → calm + reassuring
+   - neutral → clear + direct
    - positive → appreciative
 6. Reply should be 6–12 lines.
 7. Reply in first person ("I").
@@ -150,7 +163,11 @@ Now write ONLY the reply email text, without any signature.
     # ------------------------------------------------------------------
     # Regenerate reply
     # ------------------------------------------------------------------
-    def regenerate_reply(self, email: Any, custom_instructions: str = None) -> Optional[str]:
+    def regenerate_reply(
+        self,
+        email: Any,
+        custom_instructions: str = None,
+    ) -> Optional[str]:
         if not self._initialized:
             return None
 
@@ -160,7 +177,7 @@ Now write ONLY the reply email text, without any signature.
         priority = getattr(email, "priority", None) or "medium"
 
         prompt = f"""
-Generate a *different* reply to the following email.
+Generate a different reply to the following email.
 
 Subject: {subject}
 Sentiment: {sentiment}
@@ -184,7 +201,11 @@ Write only the reply email text, without any signature.
     # ------------------------------------------------------------------
     # Improve an existing reply
     # ------------------------------------------------------------------
-    def improve_reply(self, original_reply: str, improvement_type: str = "more_professional") -> Optional[str]:
+    def improve_reply(
+        self,
+        original_reply: str,
+        improvement_type: str = "more_professional",
+    ) -> Optional[str]:
         if not self._initialized:
             return None
 
@@ -216,7 +237,12 @@ Return only the improved reply text, without any signature.
     # ------------------------------------------------------------------
     # Fallback system
     # ------------------------------------------------------------------
-    def _generate_fallback_reply(self, email: Any, sentiment: str, priority: str) -> str:
+    def _generate_fallback_reply(
+        self,
+        email: Any,
+        sentiment: str,
+        priority: str,
+    ) -> str:
         sentiment = sentiment or "neutral"
         priority = priority or "medium"
 
@@ -231,7 +257,6 @@ Return only the improved reply text, without any signature.
         if "?" in body:
             reply += "I'll be happy to answer your questions soon.\n\n"
 
-        # Use same custom signature
         reply += CLOSING_SIGNATURE
         return reply
 
@@ -254,13 +279,23 @@ def init_ai_reply_generator(app=None):
     _ai_reply_generator = _get_or_init_global()
 
 
-def generate_reply(email: Any, sentiment: str = None, priority: str = None) -> Optional[str]:
+def generate_reply(
+    email: Any,
+    sentiment: str = None,
+    priority: str = None,
+) -> Optional[str]:
     return _get_or_init_global().generate_reply(email, sentiment, priority)
 
 
-def regenerate_reply(email: Any, custom_instructions: str = None) -> Optional[str]:
+def regenerate_reply(
+    email: Any,
+    custom_instructions: str = None,
+) -> Optional[str]:
     return _get_or_init_global().regenerate_reply(email, custom_instructions)
 
 
-def improve_reply(original_reply: str, improvement_type: str = "more_professional") -> Optional[str]:
+def improve_reply(
+    original_reply: str,
+    improvement_type: str = "more_professional",
+) -> Optional[str]:
     return _get_or_init_global().improve_reply(original_reply, improvement_type)
