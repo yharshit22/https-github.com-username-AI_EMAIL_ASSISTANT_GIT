@@ -1,0 +1,143 @@
+2025-11-21 13:02:50,226 - __main__ - INFO - Starting email fetch process
+2025-11-21 13:02:50,226 - __main__ - INFO - Arguments: user_id=None, limit=50, since_days=7, all_users=False
+2025-11-21 13:02:50,226 - __main__ - INFO - Processing user: yadav1harshit@gmail.com
+2025-11-21 13:02:50,240 - __main__ - INFO - Fetching emails for user 1 (limit: 50, since: 7 days)
+2025-11-21 13:02:51,348 - app.email_client - ERROR - Error fetching emails: b'[AUTHENTICATIONFAILED] Invalid credentials (Failure)'
+2025-11-21 13:02:51,363 - __main__ - INFO - No new emails found for user 1
+2025-11-21 13:02:51,363 - __main__ - INFO - Email fetch process completed. Total emails saved: 0
+2025-11-21 13:44:15,776 - __main__ - INFO - Starting email fetch process
+2025-11-21 13:44:15,776 - __main__ - INFO - Arguments: user_id=None, limit=50, since_days=7, all_users=False
+2025-11-21 13:44:15,789 - __main__ - INFO - Processing user: yadav1harshit@gmail.com
+2025-11-21 13:44:15,790 - __main__ - INFO - Fetching emails for user 1 (limit: 50, since: 7 days)
+2025-11-21 13:44:23,700 - app.sentiment - INFO - Sentiment analysis: 'Competition Launch: Vesuvius Challenge - Surface D...' -> neutral (0.50)
+2025-11-21 13:44:23,700 - app.sentiment - INFO - Sentiment analysis: 'Competition Launch: Vesuvius Challenge - Surface D...' -> positive (0.31)
+2025-11-21 13:44:23,700 - app.priority - INFO - Priority classification for 'Competition Launch: Vesuvius Challenge - Surface D...': low (0.30) - Score: 0.02
+2025-11-21 13:44:23,700 - app.priority - INFO - Reasons: High priority keywords found; Medium priority keywords found; Low priority keywords found; Low priority sender; Time-sensitive content
+2025-11-21 13:44:23,716 - __main__ - INFO - Saved email: Competition Launch: Vesuvius Challenge - Surface D...
+2025-11-21 13:44:23,716 - app.sentiment - INFO - Sentiment analysis: 'Yadavharshit, your inspo awaits...' -> neutral (0.50)
+2025-11-21 13:44:23,716 - app.sentiment - INFO - Sentiment analysis: '96 Hi Birth Certificate Form 5 Up Ten Ways On How ...' -> positive (0.33)
+2025-11-21 13:44:23,723 - app.priority - INFO - Priority classification for 'Yadavharshit, your inspo awaits...': low (0.33) - Score: 0.30
+2025-11-21 13:44:23,723 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found
+2025-11-21 13:44:23,724 - __main__ - INFO - Saved email: Yadavharshit, your inspo awaits...
+2025-11-21 13:44:23,725 - app.sentiment - INFO - Sentiment analysis: 'Here's the workflow!...' -> neutral (0.55)
+2025-11-21 13:44:23,726 - app.sentiment - INFO - Sentiment analysis: '96 Shorts Gen Shorts Generation Here's the automat...' -> neutral (0.55)
+2025-11-21 13:44:23,727 - app.priority - INFO - Priority classification for 'Here's the workflow!...': low (0.34) - Score: 0.44
+2025-11-21 13:44:23,727 - app.priority - INFO - Reasons: Low priority keywords found
+2025-11-21 13:44:23,727 - __main__ - INFO - Saved email: Here's the workflow!...
+2025-11-21 13:44:23,729 - app.sentiment - INFO - Sentiment analysis: 'Yadavharshit, just trust us...' -> neutral (0.50)
+2025-11-21 13:44:23,736 - app.priority - INFO - Priority classification for 'Yadavharshit, just trust us...': medium (0.58) - Score: 1.80
+2025-11-21 13:44:23,736 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found; Negative sentiment detected
+2025-11-21 13:44:23,736 - app.ai_reply - ERROR - AI reply generator not initialized
+2025-11-21 13:44:23,737 - __main__ - INFO - Saved email: Yadavharshit, just trust us...
+2025-11-21 13:44:23,738 - app.sentiment - INFO - Sentiment analysis: 'Yadavharshit, big mood...' -> neutral (0.50)
+2025-11-21 13:44:23,742 - app.priority - INFO - Priority classification for 'Yadavharshit, big mood...': medium (0.48) - Score: 0.80
+2025-11-21 13:44:23,742 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found
+2025-11-21 13:44:23,742 - app.ai_reply - ERROR - AI reply generator not initialized
+2025-11-21 13:44:23,742 - __main__ - INFO - Saved email: Yadavharshit, big mood...
+2025-11-21 13:44:23,745 - app.sentiment - INFO - Sentiment analysis: 'Competition Launch: Santa 2025 - Christmas Tree Pa...' -> neutral (0.50)
+2025-11-21 13:44:23,746 - app.sentiment - INFO - Sentiment analysis: 'Competition Launch: Santa 2025 - Christmas Tree Pa...' -> positive (0.39)
+2025-11-21 13:44:23,746 - app.priority - INFO - Priority classification for 'Competition Launch: Santa 2025 - Christmas Tree Pa...': low (0.34) - Score: 0.43
+2025-11-21 13:44:23,748 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found; Low priority sender; Multiple exclamations detected; Time-sensitive content
+2025-11-21 13:44:23,748 - __main__ - INFO - Saved email: Competition Launch: Santa 2025 - Christmas Tree Pa...
+2025-11-21 13:44:23,750 - app.sentiment - INFO - Sentiment analysis: 'Annual reminder about YouTube’s Terms of Service, ...' -> neutral (0.50)
+2025-11-21 13:44:23,756 - app.sentiment - INFO - Sentiment analysis: 'Annual reminder about YouTube’s Terms of Service, ...' -> positive (0.14)
+2025-11-21 13:44:23,756 - app.priority - INFO - Priority classification for 'Annual reminder about YouTube’s Terms of Service, ...': low (0.30) - Score: -0.00
+2025-11-21 13:44:23,756 - app.priority - INFO - Reasons: High priority keywords found; Medium priority keywords found; Low priority sender; Time-sensitive content
+2025-11-21 13:44:23,756 - __main__ - INFO - Saved email: Annual reminder about YouTube’s Terms of Service, ...
+2025-11-21 13:44:23,759 - app.sentiment - INFO - Sentiment analysis: 'Yadavharshit, your taste is next level...' -> neutral (0.50)
+2025-11-21 13:44:23,761 - app.priority - INFO - Priority classification for 'Yadavharshit, your taste is next level...': medium (0.48) - Score: 0.80
+2025-11-21 13:44:23,761 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found
+2025-11-21 13:44:23,762 - app.ai_reply - ERROR - AI reply generator not initialized
+2025-11-21 13:44:23,762 - __main__ - INFO - Saved email: Yadavharshit, your taste is next level...
+2025-11-21 13:44:23,764 - app.sentiment - INFO - Sentiment analysis: 'AI Mathematical Olympiad - Progress Prize 3...' -> neutral (0.50)
+2025-11-21 13:44:23,765 - app.sentiment - INFO - Sentiment analysis: 'AI Mathematical Olympiad - Progress Prize 3 Hi Har...' -> positive (0.30)
+2025-11-21 13:44:23,766 - app.priority - INFO - Priority classification for 'AI Mathematical Olympiad - Progress Prize 3...': medium (0.48) - Score: 0.79
+2025-11-21 13:44:23,766 - app.priority - INFO - Reasons: Medium priority keywords found; Low priority keywords found; Low priority sender; Multiple all-caps words; Time-sensitive content
+2025-11-21 13:44:23,766 - app.ai_reply - ERROR - AI reply generator not initialized
+2025-11-21 13:44:23,766 - __main__ - INFO - Saved email: AI Mathematical Olympiad - Progress Prize 3...
+2025-11-21 13:44:23,768 - app.sentiment - INFO - Sentiment analysis: 'Security alert...' -> neutral (0.50)
+2025-11-21 13:44:23,769 - app.sentiment - INFO - Sentiment analysis: 'A new sign-in on Windows yadav1harshit@gmail.com W...' -> neutral (0.50)
+2025-11-21 13:44:23,769 - app.priority - INFO - Priority classification for 'Security alert...': low (0.30) - Score: 0.04
+2025-11-21 13:44:23,769 - app.priority - INFO - Reasons: High priority keywords found; Medium priority keywords found; Low priority sender; Multiple all-caps words
+2025-11-21 13:44:23,769 - __main__ - INFO - Saved email: Security alert...
+2025-11-21 13:44:23,770 - app.sentiment - INFO - Sentiment analysis: '2-Step Verification turned on...' -> neutral (0.50)
+2025-11-21 13:44:23,771 - app.sentiment - INFO - Sentiment analysis: '2-Step Verification turned on yadav1harshit@gmail....' -> neutral (0.55)
+2025-11-21 13:44:23,771 - app.priority - INFO - Priority classification for '2-Step Verification turned on...': low (0.31) - Score: -0.05
+2025-11-21 13:44:23,771 - app.priority - INFO - Reasons: High priority keywords found; Medium priority keywords found; Low priority sender; Multiple all-caps words
+2025-11-21 13:44:23,771 - __main__ - INFO - Saved email: 2-Step Verification turned on...
+2025-11-21 13:44:23,771 - app.sentiment - INFO - Sentiment analysis: 'Security alert...' -> neutral (0.50)
+2025-11-21 13:44:23,771 - app.sentiment - INFO - Sentiment analysis: 'App password created to sign in to your account ya...' -> neutral (0.50)
+2025-11-21 13:44:23,771 - app.priority - INFO - Priority classification for 'Security alert...': low (0.30) - Score: -0.02
+2025-11-21 13:44:23,771 - app.priority - INFO - Reasons: High priority keywords found; Low priority sender; Multiple all-caps words
+2025-11-21 13:44:23,771 - __main__ - INFO - Saved email: Security alert...
+2025-11-21 13:44:23,779 - __main__ - INFO - Successfully processed 12 emails for user 1
+2025-11-21 13:44:23,779 - __main__ - INFO - Email fetch process completed. Total emails saved: 12
+2025-11-21 19:37:45,020 - __main__ - INFO - Starting email fetch process
+2025-11-21 19:37:45,021 - __main__ - INFO - Arguments: user_id=None, limit=50, since_days=7, all_users=False
+2025-11-21 19:37:45,033 - __main__ - INFO - Processing user: yadav1harshit@gmail.com
+2025-11-21 19:37:45,033 - __main__ - INFO - Fetching emails for user 1 (limit: 50, since: 7 days)
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<4a3439f04f2071fac4e22670b2695b597f4604d6-20369618-111741287@google.com>), skipping: Competition Launch: Vesuvius Challenge - Surface Detection
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<74.C5.44471.C7F57196@i-09cd2bf44251490a1.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, your inspo awaits
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<AMvq_V7GTBaLJ5bYmPXR-Q@geopod-ismtpd-17>), skipping: Here's the workflow!
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<C1.16.59982.7F0B8196@i-0c4a0104f84e42fd8.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, just trust us
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<C4.56.65358.B720A196@i-0506155f6b0d2df96.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, big mood
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<27458dbabc383bd499f58df398e79c2a51e8dada-20373103-111741254@google.com>), skipping: Competition Launch: Santa 2025 - Christmas Tree Packing Chal
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<be823fa033e28ec8dc5d94cc1e642a636269a3ac-20336349-111567862@google.com>), skipping: Annual reminder about YouTube’s Terms of Service, Community 
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<20251119165730.adf17c5cfc6406f0@discover.pinterest.com>), skipping: Yadavharshit, your taste is next level
+2025-11-21 19:37:55,627 - __main__ - INFO - Email already exists (message_id=<6df0b7460624ed073566a4b7e43416b46b56f8d3-20373778-111735952@google.com>), skipping: AI Mathematical Olympiad - Progress Prize 3
+2025-11-21 19:37:55,636 - __main__ - INFO - Email already exists (message_id=<pByJkYuaQHoWJ6FcQRRX8Q@notifications.google.com>), skipping: Security alert
+2025-11-21 19:37:55,636 - __main__ - INFO - Email already exists (message_id=<t0ptL5DqxSXFOcm1vW9ywA@notifications.google.com>), skipping: 2-Step Verification turned on
+2025-11-21 19:37:55,637 - __main__ - INFO - Email already exists (message_id=<sD6aBT666CAbhAMplBNIOg@notifications.google.com>), skipping: Security alert
+2025-11-21 19:37:55,637 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbevtWGLr7w8QwM5VWvptm+b9HK0KA+xbjyr87nTd80pw@mail.gmail.com>), skipping: you sould have done the work by now
+2025-11-21 19:37:55,638 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbbVnq3NmVT1AJYPD+3AwYv6_4V40NGY9uooT4i6mT_Zg@mail.gmail.com>), skipping: rejected
+2025-11-21 19:37:55,639 - __main__ - INFO - Email already exists (message_id=<CAHcwrfZ5J82Z7NGbOZ1YTUZug-PsiRcwQrb8bUoz9_nL_zbYLQ@mail.gmail.com>), skipping: Hello how
+2025-11-21 19:37:55,639 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYuY=eq7-d-PZuC6nCAqE9F4H9ym6BE1E_heTr=m-FYeA@mail.gmail.com>), skipping: Extremely Disappointed with Your Service
+2025-11-21 19:37:55,640 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYxDQO51xGHgfr3gB7tFgnCrKheknc765p164Wpfr6GNA@mail.gmail.com>), skipping: Thank You for the Excellent Support!
+2025-11-21 19:37:55,640 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYvdCwnF6tLvHSkCL7npFOA+XGEvTK_bhKmCyuo4Gmz=Q@mail.gmail.com>), skipping: Request for Update on Current Status
+2025-11-21 19:37:55,641 - __main__ - INFO - Email already exists (message_id=<CAHcwrfahwL-J=yHNG8YDzvct=8aZw1CfZSLmdnF=rxkzTGLOJg@mail.gmail.com>), skipping: URGENT: Immediate Action Required on System Failure
+2025-11-21 19:37:55,641 - __main__ - INFO - Successfully processed 0 emails for user 1
+2025-11-21 19:37:55,643 - __main__ - INFO - Processing user: abc@gmail.com
+2025-11-21 19:37:55,644 - __main__ - INFO - Fetching emails for user 2 (limit: 50, since: 7 days)
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<4a3439f04f2071fac4e22670b2695b597f4604d6-20369618-111741287@google.com>), skipping: Competition Launch: Vesuvius Challenge - Surface Detection
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<74.C5.44471.C7F57196@i-09cd2bf44251490a1.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, your inspo awaits
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<AMvq_V7GTBaLJ5bYmPXR-Q@geopod-ismtpd-17>), skipping: Here's the workflow!
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<C1.16.59982.7F0B8196@i-0c4a0104f84e42fd8.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, just trust us
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<C4.56.65358.B720A196@i-0506155f6b0d2df96.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, big mood
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<27458dbabc383bd499f58df398e79c2a51e8dada-20373103-111741254@google.com>), skipping: Competition Launch: Santa 2025 - Christmas Tree Packing Chal
+2025-11-21 19:38:04,128 - __main__ - INFO - Email already exists (message_id=<be823fa033e28ec8dc5d94cc1e642a636269a3ac-20336349-111567862@google.com>), skipping: Annual reminder about YouTube’s Terms of Service, Community 
+2025-11-21 19:38:04,136 - __main__ - INFO - Email already exists (message_id=<20251119165730.adf17c5cfc6406f0@discover.pinterest.com>), skipping: Yadavharshit, your taste is next level
+2025-11-21 19:38:04,137 - __main__ - INFO - Email already exists (message_id=<6df0b7460624ed073566a4b7e43416b46b56f8d3-20373778-111735952@google.com>), skipping: AI Mathematical Olympiad - Progress Prize 3
+2025-11-21 19:38:04,138 - __main__ - INFO - Email already exists (message_id=<pByJkYuaQHoWJ6FcQRRX8Q@notifications.google.com>), skipping: Security alert
+2025-11-21 19:38:04,139 - __main__ - INFO - Email already exists (message_id=<t0ptL5DqxSXFOcm1vW9ywA@notifications.google.com>), skipping: 2-Step Verification turned on
+2025-11-21 19:38:04,139 - __main__ - INFO - Email already exists (message_id=<sD6aBT666CAbhAMplBNIOg@notifications.google.com>), skipping: Security alert
+2025-11-21 19:38:04,141 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbevtWGLr7w8QwM5VWvptm+b9HK0KA+xbjyr87nTd80pw@mail.gmail.com>), skipping: you sould have done the work by now
+2025-11-21 19:38:04,143 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbbVnq3NmVT1AJYPD+3AwYv6_4V40NGY9uooT4i6mT_Zg@mail.gmail.com>), skipping: rejected
+2025-11-21 19:38:04,143 - __main__ - INFO - Email already exists (message_id=<CAHcwrfZ5J82Z7NGbOZ1YTUZug-PsiRcwQrb8bUoz9_nL_zbYLQ@mail.gmail.com>), skipping: Hello how
+2025-11-21 19:38:04,144 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYuY=eq7-d-PZuC6nCAqE9F4H9ym6BE1E_heTr=m-FYeA@mail.gmail.com>), skipping: Extremely Disappointed with Your Service
+2025-11-21 19:38:04,145 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYxDQO51xGHgfr3gB7tFgnCrKheknc765p164Wpfr6GNA@mail.gmail.com>), skipping: Thank You for the Excellent Support!
+2025-11-21 19:38:04,146 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYvdCwnF6tLvHSkCL7npFOA+XGEvTK_bhKmCyuo4Gmz=Q@mail.gmail.com>), skipping: Request for Update on Current Status
+2025-11-21 19:38:04,147 - __main__ - INFO - Email already exists (message_id=<CAHcwrfahwL-J=yHNG8YDzvct=8aZw1CfZSLmdnF=rxkzTGLOJg@mail.gmail.com>), skipping: URGENT: Immediate Action Required on System Failure
+2025-11-21 19:38:04,147 - __main__ - INFO - Successfully processed 0 emails for user 2
+2025-11-21 19:38:04,149 - __main__ - INFO - Processing user: aabc@gmail.com
+2025-11-21 19:38:04,149 - __main__ - INFO - Fetching emails for user 3 (limit: 50, since: 7 days)
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<4a3439f04f2071fac4e22670b2695b597f4604d6-20369618-111741287@google.com>), skipping: Competition Launch: Vesuvius Challenge - Surface Detection
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<74.C5.44471.C7F57196@i-09cd2bf44251490a1.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, your inspo awaits
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<AMvq_V7GTBaLJ5bYmPXR-Q@geopod-ismtpd-17>), skipping: Here's the workflow!
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<C1.16.59982.7F0B8196@i-0c4a0104f84e42fd8.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, just trust us
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<C4.56.65358.B720A196@i-0506155f6b0d2df96.mta2vrest.sd.prd.sparkpost>), skipping: Yadavharshit, big mood
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<27458dbabc383bd499f58df398e79c2a51e8dada-20373103-111741254@google.com>), skipping: Competition Launch: Santa 2025 - Christmas Tree Packing Chal
+2025-11-21 19:38:12,770 - __main__ - INFO - Email already exists (message_id=<be823fa033e28ec8dc5d94cc1e642a636269a3ac-20336349-111567862@google.com>), skipping: Annual reminder about YouTube’s Terms of Service, Community 
+2025-11-21 19:38:12,782 - __main__ - INFO - Email already exists (message_id=<20251119165730.adf17c5cfc6406f0@discover.pinterest.com>), skipping: Yadavharshit, your taste is next level
+2025-11-21 19:38:12,782 - __main__ - INFO - Email already exists (message_id=<6df0b7460624ed073566a4b7e43416b46b56f8d3-20373778-111735952@google.com>), skipping: AI Mathematical Olympiad - Progress Prize 3
+2025-11-21 19:38:12,784 - __main__ - INFO - Email already exists (message_id=<pByJkYuaQHoWJ6FcQRRX8Q@notifications.google.com>), skipping: Security alert
+2025-11-21 19:38:12,785 - __main__ - INFO - Email already exists (message_id=<t0ptL5DqxSXFOcm1vW9ywA@notifications.google.com>), skipping: 2-Step Verification turned on
+2025-11-21 19:38:12,787 - __main__ - INFO - Email already exists (message_id=<sD6aBT666CAbhAMplBNIOg@notifications.google.com>), skipping: Security alert
+2025-11-21 19:38:12,788 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbevtWGLr7w8QwM5VWvptm+b9HK0KA+xbjyr87nTd80pw@mail.gmail.com>), skipping: you sould have done the work by now
+2025-11-21 19:38:12,789 - __main__ - INFO - Email already exists (message_id=<CAHcwrfbbVnq3NmVT1AJYPD+3AwYv6_4V40NGY9uooT4i6mT_Zg@mail.gmail.com>), skipping: rejected
+2025-11-21 19:38:12,790 - __main__ - INFO - Email already exists (message_id=<CAHcwrfZ5J82Z7NGbOZ1YTUZug-PsiRcwQrb8bUoz9_nL_zbYLQ@mail.gmail.com>), skipping: Hello how
+2025-11-21 19:38:12,791 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYuY=eq7-d-PZuC6nCAqE9F4H9ym6BE1E_heTr=m-FYeA@mail.gmail.com>), skipping: Extremely Disappointed with Your Service
+2025-11-21 19:38:12,791 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYxDQO51xGHgfr3gB7tFgnCrKheknc765p164Wpfr6GNA@mail.gmail.com>), skipping: Thank You for the Excellent Support!
+2025-11-21 19:38:12,792 - __main__ - INFO - Email already exists (message_id=<CAHcwrfYvdCwnF6tLvHSkCL7npFOA+XGEvTK_bhKmCyuo4Gmz=Q@mail.gmail.com>), skipping: Request for Update on Current Status
+2025-11-21 19:38:12,792 - __main__ - INFO - Email already exists (message_id=<CAHcwrfahwL-J=yHNG8YDzvct=8aZw1CfZSLmdnF=rxkzTGLOJg@mail.gmail.com>), skipping: URGENT: Immediate Action Required on System Failure
+2025-11-21 19:38:12,792 - __main__ - INFO - Successfully processed 0 emails for user 3
+2025-11-21 19:38:12,792 - __main__ - INFO - Email fetch process completed. Total emails saved: 0

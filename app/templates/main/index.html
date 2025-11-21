@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8 text-center">
+        <h1 class="display-4 mb-4">
+            <i class="bi bi-envelope-pulse text-primary"></i>
+            AI Email Assistant (MOTU.AI)
+        </h1>
+        <p class="lead mb-4">
+            Automate your email management with AI-powered sentiment analysis, priority classification, and intelligent reply generation.
+        </p>
+        
+        <div class="row mt-5">
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-robot display-1 text-primary mb-3"></i>
+                        <h5 class="card-title">AI-Powered Analysis</h5>
+                        <p class="card-text">Automatically analyze email sentiment and classify priority using advanced AI algorithms.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-envelope-check display-1 text-success mb-3"></i>
+                        <h5 class="card-title">Smart Replies</h5>
+                        <p class="card-text">Generate context-aware replies that match the tone and priority of incoming emails.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-speedometer2 display-1 text-warning mb-3"></i>
+                        <h5 class="card-title">Efficient Workflow</h5>
+                        <p class="card-text">Streamline your email management with automated categorization and priority-based handling.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-5">
+            {% if not current_user.is_authenticated %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg me-3">
+                    <i class="bi bi-person-plus"></i> Get Started
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary btn-lg">
+                    <i class="bi bi-box-arrow-in-right"></i> Login
+                </a>
+            {% else %}
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary btn-lg">
+                    <i class="bi bi-speedometer2"></i> Go to Dashboard
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

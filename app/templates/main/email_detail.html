@@ -1,0 +1,311 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8">
+        <!-- Email Header -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-envelope"></i> Email Details</h5>
+                <div>
+                    <span class="badge {{ email.priority_badge_class }} me-2">{{ email.priority|title }} Priority</span>
+                    <span class="badge {{ email.sentiment_badge_class }}">{{ email.sentiment|title }}</span>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>From:</strong></div>
+                    <div class="col-md-10">{{ email.from_address }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>To:</strong></div>
+                    <div class="col-md-10">{{ email.to_address }}</div>
+                </div>
+                {% if email.cc_address %}
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>CC:</strong></div>
+                    <div class="col-md-10">{{ email.cc_address }}</div>
+                </div>
+                {% endif %}
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>Subject:</strong></div>
+                    <div class="col-md-10"><strong>{{ email.subject }}</strong></div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>Date:</strong></div>
+                    <div class="col-md-10">{{ email.received_at.strftime('%A, %B %d, %Y at %I:%M %p') }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-2"><strong>Status:</strong></div>
+                    <div class="col-md-10">
+                        <span class="badge {{ email.status_badge_class }}">{{ email.status|title }}</span>
+                        {% if email.is_flagged %}
+                            <span class="badge bg-warning ms-2">
+                                <i class="bi bi-flag-fill"></i> Flagged
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Email Body -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-body-text"></i> Message</h5>
+            </div>
+            <div class="card-body">
+                <div class="email-body">
+                    {{ email.body|replace('\n', '<br>')|safe }}
+                </div>
+            </div>
+        </div>
+
+        <!-- Analysis Results -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-activity"></i> AI Analysis</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Sentiment Analysis</h6>
+                        <p>
+                            <strong>Sentiment:</strong>
+                            <span class="badge {{ email.sentiment_badge_class }}">
+                                {{ email.sentiment|title }}
+                            </span>
+                        </p>
+                        <p><strong>Confidence:</strong> {{ (email.sentiment_score * 100)|round(1) }}%</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Priority Classification</h6>
+                        <p>
+                            <strong>Priority:</strong>
+                            <span class="badge {{ email.priority_badge_class }}">
+                                {{ email.priority|title }}
+                            </span>
+                        </p>
+                        <p><strong>Analysis:</strong> Based on keywords, sender, and content analysis</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Generated Reply -->
+        {% if email.generated_reply %}
+        <div class="card mb-4" id="reply">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-robot"></i> AI Generated Reply</h5>
+                <div>
+                    <!-- Regenerate via POST (server handles it) -->
+                    <form method="POST" action="{{ url_for('main.generate_email_reply', email_id=email.id) }}" class="d-inline">
+                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-arrow-clockwise"></i> Regenerate
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="card-body">
+                <textarea class="form-control" rows="8" id="replyText" readonly>{{ email.generated_reply }}</textarea>
+                
+                <div class="mt-3">
+                    <form method="POST"
+                          action="{{ url_for('main.send_email_reply', email_id=email.id) }}"
+                          onsubmit="prepareReply()">
+                        <input type="hidden" name="reply_text" id="replyTextHidden">
+                        <button type="submit" class="btn btn-success me-2">
+                            <i class="bi bi-send"></i> Send Reply
+                        </button>
+                        <button type="button" class="btn btn-outline-secondary"
+                                onclick="editReply(this)">
+                            <i class="bi bi-pencil"></i> Edit Reply
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-robot"></i> AI Reply Generation</h5>
+            </div>
+            <div class="card-body text-center">
+                <p class="text-muted">No AI reply generated yet.</p>
+                <form method="POST" action="{{ url_for('main.generate_email_reply', email_id=email.id) }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-robot"></i> Generate AI Reply
+                    </button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-md-4">
+        <!-- Quick Actions -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-lightning"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-grid gap-2">
+                    <!-- Flag / Unflag via JSON -->
+                    <button class="btn btn-outline-primary"
+                            onclick="toggleFlagEmail({{ email.id }}, {{ 'true' if email.is_flagged else 'false' }})">
+                        <i class="bi {% if email.is_flagged %}bi-flag-fill{% else %}bi-flag{% endif %}"></i>
+                        {% if email.is_flagged %}Remove Flag{% else %}Flag Email{% endif %}
+                    </button>
+                    
+                    <!-- Mark as Ignored via JSON -->
+                    <button type="button"
+                            class="btn btn-outline-danger"
+                            onclick="updateEmailStatus({{ email.id }}, 'ignored')">
+                        <i class="bi bi-x-circle"></i> Mark as Ignored
+                    </button>
+                    
+                    <a href="{{ url_for('main.emails_list') }}" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Attachments -->
+        {% if email.attachments %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-paperclip"></i> Attachments</h5>
+            </div>
+            <div class="card-body">
+                {% for attachment in email.attachments %}
+                <div class="d-flex align-items-center mb-2">
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    <div>
+                        <small><strong>{{ attachment.filename }}</strong></small><br>
+                        <small class="text-muted">{{ attachment.content_type }} - {{ attachment.size }} bytes</small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Email Metadata -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="bi bi-info-circle"></i> Metadata</h5>
+            </div>
+            <div class="card-body">
+                <small>
+                    <p><strong>Message ID:</strong><br>{{ email.message_id[:50] }}...</p>
+                    <p><strong>Size:</strong> {{ email.message_size }} bytes</p>
+                    {% if email.in_reply_to %}
+                    <p><strong>In Reply To:</strong><br>{{ email.in_reply_to[:50] }}...</p>
+                    {% endif %}
+                    {% if email.replied_at %}
+                    <p><strong>Replied At:</strong><br>{{ email.replied_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                    {% endif %}
+                </small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // -------- STATUS UPDATE (JSON → /email/<id>/update_status) --------
+    function updateEmailStatus(emailId, newStatus) {
+        if (!confirm(`Change status to "${newStatus}"?`)) {
+            return;
+        }
+
+        fetch(`/email/${emailId}/update_status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ status: newStatus })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not OK');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert(data.message || 'Failed to update status');
+            }
+        })
+        .catch(err => {
+            console.error('Error updating status:', err);
+            alert('Error updating status. Check console for details.');
+        });
+    }
+
+    // -------- FLAG / UNFLAG EMAIL --------
+    function toggleFlagEmail(emailId, currentlyFlagged) {
+        const newFlag = !currentlyFlagged;
+
+        fetch(`/email/${emailId}/update_status`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ is_flagged: newFlag })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not OK');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                window.location.reload();
+            } else {
+                alert(data.message || 'Failed to update flag status');
+            }
+        })
+        .catch(err => {
+            console.error('Error toggling flag:', err);
+            alert('Error toggling flag. Check console for details.');
+        });
+    }
+
+    // -------- EDIT / SAVE REPLY (FRONTEND ONLY) --------
+    function editReply(button) {
+        const textarea = document.getElementById('replyText');
+        textarea.removeAttribute('readonly');
+        textarea.focus();
+
+        button.innerHTML = '<i class="bi bi-check"></i> Save Changes';
+        button.className = 'btn btn-success';
+        button.onclick = function () {
+            saveReply(button);
+        };
+    }
+
+    function saveReply(button) {
+        const textarea = document.getElementById('replyText');
+        textarea.setAttribute('readonly', 'readonly');
+
+        button.innerHTML = '<i class="bi bi-pencil"></i> Edit Reply';
+        button.className = 'btn btn-outline-secondary';
+        button.onclick = function () {
+            editReply(button);
+        };
+    }
+
+    // -------- COPY TEXTAREA INTO HIDDEN FIELD BEFORE SUBMIT --------
+    function prepareReply() {
+        const replyText = document.getElementById('replyText').value;
+        document.getElementById('replyTextHidden').value = replyText;
+    }
+</script>
+{% endblock %}

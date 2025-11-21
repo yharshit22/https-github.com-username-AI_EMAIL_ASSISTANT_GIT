@@ -1,0 +1,396 @@
+/* Custom styles for AI Email Assistant */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+}
+
+body {
+    padding-top: 50px;  /* navbar ki height ke hisaab se; zarurat ho to 70/90 try kar sakte ho */
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Sidebar styles */
+.sidebar {
+    position: fixed;
+    top: 56px;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    padding: 0;
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 56px);
+    padding-top: .5rem;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+    padding: .75rem 1rem;
+    border-radius: 0.375rem;
+    margin: 0.125rem 0.5rem;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+}
+
+.sidebar .nav-link.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.sidebar .nav-link i {
+    margin-right: 0.5rem;
+}
+
+/* Main content area */
+main {
+    padding-top: 20px;
+}
+
+/* Card enhancements */
+.card {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    font-weight: 600;
+}
+
+/* Statistics cards */
+.stats-card {
+    border-left: 4px solid;
+}
+
+.stats-card.primary {
+    border-left-color: var(--primary-color);
+}
+
+.stats-card.success {
+    border-left-color: var(--success-color);
+}
+
+.stats-card.danger {
+    border-left-color: var(--danger-color);
+}
+
+.stats-card.warning {
+    border-left-color: var(--warning-color);
+}
+
+/* Email table styles */
+.table-hover tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+}
+
+.email-subject {
+    font-weight: 600;
+    color: var(--dark-color);
+    text-decoration: none;
+}
+
+.email-subject:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
+}
+
+/* Badge enhancements */
+.badge {
+    font-weight: 500;
+    padding: 0.35em 0.65em;
+}
+
+.badge-priority-high {
+    background-color: var(--danger-color);
+}
+
+.badge-priority-medium {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+}
+
+.badge-priority-low {
+    background-color: var(--secondary-color);
+}
+
+.badge-sentiment-positive {
+    background-color: var(--success-color);
+}
+
+.badge-sentiment-neutral {
+    background-color: var(--warning-color);
+    color: var(--dark-color);
+}
+
+.badge-sentiment-negative {
+    background-color: var(--danger-color);
+}
+
+/* Email body styles */
+.email-body {
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Reply textarea */
+.reply-textarea {
+    font-family: inherit;
+    resize: vertical;
+}
+
+/* Loading spinner */
+.spinner-border {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.1em;
+}
+
+
+/* Chart containers – smaller pies on dashboard */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 220px;       /* pehle 300px tha */
+    max-height: 220px;
+    margin: 0 auto;
+}
+
+/* Large screens par thoda sa bada */
+@media (min-width: 1400px) {
+    .chart-container {
+        height: 250px;
+        max-height: 250px;
+    }
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .sidebar {
+        top: 0;
+        height: 100vh;
+    }
+    
+    .sidebar-sticky {
+        height: 100vh;
+    }
+    
+    main {
+        margin-left: 0;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}
+
+/* Custom scrollbar */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Animation for cards */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeInUp 0.3s ease-out;
+}
+
+/* Priority row highlighting */
+.table-danger {
+    background-color: rgba(220, 53, 69, 0.05);
+}
+
+.table-warning {
+    background-color: rgba(255, 193, 7, 0.05);
+}
+
+/* Status indicators */
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.5rem;
+}
+
+.status-new {
+    background-color: var(--primary-color);
+}
+
+.status-in-progress {
+    background-color: var(--warning-color);
+}
+
+.status-replied {
+    background-color: var(--success-color);
+}
+
+.status-ignored {
+    background-color: var(--secondary-color);
+}
+
+/* Hover effects for interactive elements */
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+}
+
+/* Form enhancements */
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Alert enhancements */
+.alert {
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.alert-dismissible .btn-close {
+    padding: 0.75rem;
+}
+
+/* Footer */
+.footer {
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Print styles */
+@media print {
+    .sidebar,
+    .navbar,
+    .btn,
+    .card-header .btn {
+        display: none !important;
+    }
+    
+    main {
+        margin-left: 0 !important;
+        padding: 0 !important;
+    }
+    
+    .card {
+        box-shadow: none !important;
+        border: 1px solid #dee2e6 !important;
+    }
+}
+
+
+/* ====== USER DROPDOWN FIX (CLEAN) ====== */
+
+/* dropdown ko thoda wide aur clean bana do */
+.navbar .dropdown-menu {
+    min-width: 220px;          /* enough space for full text */
+    padding: 0.5rem 0;
+    right: 0;                  /* right aligned */
+    left: auto;                /* left se constraint hata do */
+    z-index: 2000;             /* navbar ke upar rahe */
+}
+
+/* items ko ek line me aur center align */
+.navbar .dropdown-menu .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;       /* text wrap na ho */
+    font-size: 15px;
+    padding: 8px 16px;
+}
+
+/* icon size thoda readable */
+.navbar .dropdown-menu .dropdown-item i {
+    font-size: 1rem;
+}
+
+/* dropdown cut na ho, overflow allow karo */
+.navbar,
+.navbar-nav,
+.nav-item {
+    overflow: visible !important;
+}
+
+
+
+
+/* =======================================================
+   LEGACY BADGE COLORS (for badge-danger / badge-warning / etc.)
+   ======================================================= */
+
+.badge-primary {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+.badge-success {
+    background-color: var(--success-color);
+    color: #fff;
+}
+
+.badge-danger {
+    background-color: var(--danger-color);
+    color: #fff;
+}
+
+.badge-warning {
+    background-color: var(--warning-color);
+    color: #212529; /* dark text on yellow */
+}
+
+.badge-secondary {
+    background-color: var(--secondary-color);
+    color: #fff;
+}

@@ -1,0 +1,73 @@
+<nav class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+    <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.dashboard' %}active{% endif %}" 
+                   href="{{ url_for('main.dashboard') }}">
+                    <i class="bi bi-speedometer2"></i> Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {% if request.endpoint == 'main.emails_list' %}active{% endif %}" 
+                   href="{{ url_for('main.emails_list') }}">
+                    <i class="bi bi-envelope"></i> Emails
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link" href="#" onclick="fetchEmails()">
+                    <i class="bi bi-cloud-download"></i> Fetch Emails
+                </a>
+            </li>
+        </ul>
+        
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Quick Filters</span>
+        </h6>
+        
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.emails_list', priority='high') }}">
+                    <i class="bi bi-exclamation-triangle text-danger"></i> High Priority
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.emails_list', status='new') }}">
+                    <i class="bi bi-envelope-open"></i> New Emails
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.emails_list', status='in_progress') }}">
+                    <i class="bi bi-hourglass-split"></i> In Progress
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('main.emails_list', sentiment='negative') }}">
+                    <i class="bi bi-emoji-frown text-warning"></i> Negative Sentiment
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+function fetchEmails() {
+    if (confirm('Fetch new emails from your email server?')) {
+        fetch('{{ url_for("main.fetch_emails") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': ''
+
+
+
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to fetch emails. Please try again.');
+            }
+        });
+    }
+}
+</script>

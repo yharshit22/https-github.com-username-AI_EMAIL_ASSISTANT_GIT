@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-speedometer2"></i> Dashboard</h1>
+    <button class="btn btn-primary" onclick="fetchEmails()">
+        <i class="bi bi-cloud-download"></i> Fetch Emails
+    </button>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Total Emails</h6>
+                        <h2 class="mb-0">{{ total_emails }}</h2>
+                    </div>
+                    <i class="bi bi-envelope display-4 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Today's Emails</h6>
+                        <h2 class="mb-0">{{ today_emails }}</h2>
+                    </div>
+                    <i class="bi bi-calendar-day display-4 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">High Priority</h6>
+                        <h2 class="mb-0">{{ high_priority_emails }}</h2>
+                    </div>
+                    <i class="bi bi-exclamation-triangle display-4 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 mb-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h6 class="card-title">Pending Replies</h6>
+                        <h2 class="mb-0">{{ pending_replies }}</h2>
+                    </div>
+                    <i class="bi bi-hourglass-split display-4 opacity-75"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Charts -->
+<div class="row">
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-pie-chart"></i> Sentiment Distribution
+            </div>
+            <div class="card-body chart-container-small">
+                <canvas id="sentimentChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="bi bi-bar-chart"></i> Priority Distribution
+            </div>
+            <div class="card-body chart-container-small">
+                <canvas id="priorityChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Recent Emails -->
+<div class="row">
+    <div class="col-12">
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="bi bi-clock"></i> Recent Emails</h5>
+                <a href="{{ url_for('main.emails_list') }}" class="btn btn-sm btn-outline-primary">
+                    View All
+                </a>
+            </div>
+
+            <div class="card-body">
+
+                {% if recent_emails %}
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th>Priority</th>
+                                <th>Sentiment</th>
+                                <th>From</th>
+                                <th>Subject</th>
+                                <th>Received</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            {% for email in recent_emails %}
+                            <tr>
+
+                                <!-- Always visible — no hover needed -->
+                                <td>
+                                    <span class="badge {{ email.priority_badge_class }}">
+                                        {{ email.priority|title }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <span class="badge {{ email.sentiment_badge_class }}">
+                                        {{ email.sentiment|title }}
+                                    </span>
+                                </td>
+
+                                <td>{{ email.from_address[:30] }}</td>
+
+                                <td>
+                                    <a href="{{ url_for('main.email_detail', email_id=email.id) }}">
+                                        {{ email.subject[:50] }}{% if email.subject|length > 50 %}...{% endif %}
+                                    </a>
+                                </td>
+
+                                <td>{{ email.received_at.strftime('%Y-%m-%d %H:%M') }}</td>
+
+                                <td>
+                                    <span class="badge {{ email.status_badge_class }}">
+                                        {{ email.status|title }}
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a href="{{ url_for('main.email_detail', email_id=email.id) }}"
+                                       class="btn btn-sm btn-primary">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                </td>
+
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+                {% else %}
+                <div class="text-center py-4">
+                    <i class="bi bi-inbox display-1 text-muted"></i>
+                    <p class="text-muted">No emails found. Click "Fetch Emails" to get started.</p>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+// Small, balanced charts
+const smallChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom' } }
+};
+
+// Sentiment Chart
+new Chart(document.getElementById('sentimentChart'), {
+    type: 'pie',
+    data: {
+        labels: [{% for s,c in sentiment_stats %}'{{ s|title }}'{% if not loop.last %},{% endif %}{% endfor %}],
+        datasets: [{
+            data: [{% for s,c in sentiment_stats %}{{ c }}{% if not loop.last %},{% endif %}{% endfor %}],
+            backgroundColor: ['#28a745', '#ffc107', '#dc3545']
+        }]
+    },
+    options: smallChartOptions
+});
+
+// Priority Chart
+new Chart(document.getElementById('priorityChart'), {
+    type: 'doughnut',
+    data: {
+        labels: [{% for p,c in priority_stats %}'{{ p|title }}'{% if not loop.last %},{% endif %}{% endfor %}],
+        datasets: [{
+            data: [{% for p,c in priority_stats %}{{ c }}{% if not loop.last %},{% endif %}{% endfor %}],
+            backgroundColor: ['#dc3545', '#ffc107', '#6c757d']
+        }]
+    },
+    options: smallChartOptions
+});
+
+// Fetch emails
+function fetchEmails() {
+    if (confirm('Fetch new emails from your server?')) {
+        fetch('{{ url_for("main.fetch_emails") }}', { method: 'POST' })
+        .then(r => r.ok ? location.reload() : alert("Failed to fetch emails"))
+    }
+}
+
+</script>
+{% endblock %}

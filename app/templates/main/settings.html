@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Settings</h1>
+        <span class="text-muted small">Harshit's AI Assistant (MOTU.AI)</span>
+    </div>
+
+    <div class="row">
+        <!-- General settings -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    General Settings
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-3">
+                        Basic configuration for your AI Email Assistant.  
+                        Currently this place is just a placeholder, In future we'll let you to customize the app from here.
+                    </p>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Display Name</label>
+                            <input type="text" class="form-control" value="{{ current_user.username }}" disabled>
+                            <div class="form-text">
+                                It is the same name shown in user dropdown.
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Primary Email (IMAP/SMTP)</label>
+                            <input type="email"
+                                    class="form-control"
+                                    value="{{ config.get('IMAP_USERNAME', current_user.email) }}"
+                                    disabled>
+                            <div class="form-text">
+                                Ye woh <strong>Gmail from .env (IMAP_USERNAME)</strong> hai jisse emails fetch &
+                                send ho rahe hain.  
+                                Login kisi bhi email se ho sakta hai, lekin backend hamesha isi account se
+                                Gmail se connect karega.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Primary Email (IMAP/SMTP)</label>
+                            <input type="email" class="form-control" value="{{ current_user.email }}" disabled>
+                            <div class="form-text">
+                                This is the same email from which emails are being fetched and sent.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Theme</label>
+                            <select class="form-select" disabled>
+                                <option selected>Default (Light)</option>
+                            </select>
+                            <div class="form-text">
+                                Theme switching hann't implemented yet.
+
+                                We'll add these updates in future very soon - MOTU.AI.
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" disabled>
+                            Save (Coming soon)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI & Email info (read-only) -->
+        <div class="col-lg-6 mb-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    AI Reply Settings (Read-only)
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Engine
+                            <span class="badge bg-primary rounded-pill">
+                                Gemini ({{ config.get('GEMINI_MODEL', 'gemini-1.5-flash') }})
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Temperature
+                            <span class="badge bg-secondary rounded-pill">
+                                {{ config.get('GEMINI_TEMPERATURE', 0.4) }}
+                            </span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Max Output Tokens
+                            <span class="badge bg-secondary rounded-pill">
+                                {{ config.get('GEMINI_MAX_OUTPUT_TOKENS', 512) }}
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <small class="text-muted">
+                                These values cannot be chnged from the front-end as of now.  
+                                If the need arises, they will have to be updated in the ".env" or config file.
+                            </small>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    System Info
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <strong>App:</strong> AI Email Assistant (MOTU.AI) v1.0.0
+                    </p>
+                    <p class="mb-2">
+                        <strong>User:</strong> {{ current_user.username }} (ID: {{ current_user.id }})
+                    </p>
+                    <p class="mb-0 text-muted">
+                        Currently, this page just shows basic info.  
+                        In the future, you'll be able to control things like IMAP/SMTP config, AI model switching, and daily limits from here.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Filhaal koi extra JS nahi – future enhancements ke liye yaha likhenge #}
+{% endblock %}

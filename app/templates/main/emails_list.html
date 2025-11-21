@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="bi bi-envelope"></i> Emails</h1>
+    <button class="btn btn-primary" onclick="fetchEmails()">
+        <i class="bi bi-cloud-download"></i> Fetch Emails
+    </button>
+</div>
+
+<!-- Filters -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h5 class="mb-0"><i class="bi bi-funnel"></i> Filters</h5>
+    </div>
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" 
+                       placeholder="Search emails..." value="{{ search_query }}">
+            </div>
+            <div class="col-md-2">
+                <label for="priority" class="form-label">Priority</label>
+                <select class="form-select" id="priority" name="priority">
+                    <option value="all" {% if priority_filter == 'all' %}selected{% endif %}>All</option>
+                    <option value="high" {% if priority_filter == 'high' %}selected{% endif %}>High</option>
+                    <option value="medium" {% if priority_filter == 'medium' %}selected{% endif %}>Medium</option>
+                    <option value="low" {% if priority_filter == 'low' %}selected{% endif %}>Low</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="sentiment" class="form-label">Sentiment</label>
+                <select class="form-select" id="sentiment" name="sentiment">
+                    <option value="all" {% if sentiment_filter == 'all' %}selected{% endif %}>All</option>
+                    <option value="positive" {% if sentiment_filter == 'positive' %}selected{% endif %}>Positive</option>
+                    <option value="neutral" {% if sentiment_filter == 'neutral' %}selected{% endif %}>Neutral</option>
+                    <option value="negative" {% if sentiment_filter == 'negative' %}selected{% endif %}>Negative</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                    <option value="all" {% if status_filter == 'all' %}selected{% endif %}>All</option>
+                    <option value="new" {% if status_filter == 'new' %}selected{% endif %}>New</option>
+                    <option value="in_progress" {% if status_filter == 'in_progress' %}selected{% endif %}>In Progress</option>
+                    <option value="replied" {% if status_filter == 'replied' %}selected{% endif %}>Replied</option>
+                    <option value="ignored" {% if status_filter == 'ignored' %}selected{% endif %}>Ignored</option>
+                </select>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-search"></i> Filter
+                </button>
+                <a href="{{ url_for('main.emails_list') }}" class="btn btn-secondary">
+                    <i class="bi bi-x-circle"></i> Clear
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Bulk Actions -->
+<div class="card mb-4" id="bulkActions" style="display: none;">
+    <div class="card-body">
+        <div class="d-flex align-items-center">
+            <span class="me-3">Selected: <span id="selectedCount">0</span></span>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="bulkAction('mark_read')">
+                    <i class="bi bi-eye"></i> Mark Read
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="bulkAction('mark_unread')">
+                    <i class="bi bi-eye-slash"></i> Mark Unread
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-warning" onclick="bulkAction('flag')">
+                    <i class="bi bi-flag"></i> Flag
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="bulkAction('status_ignored')">
+                    <i class="bi bi-x-circle"></i> Ignore
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Emails Table -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Email List</h5>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="selectAll" onchange="toggleSelectAll()">
+            <label class="form-check-label" for="selectAll">Select All</label>
+        </div>
+    </div>
+    <div class="card-body">
+        {% if emails.items %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th width="5%">
+                                <input type="checkbox" class="form-check-input" onchange="toggleSelectAll()">
+                            </th>
+                            <th width="8%">Priority</th>
+                            <th width="8%">Sentiment</th>
+                            <th width="15%">From</th>
+                            <th width="30%">Subject</th>
+                            <th width="12%">Received</th>
+                            <th width="8%">Status</th>
+                            <th width="14%">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for email in emails.items %}
+                        <tr class="{% if email.priority == 'high' %}table-danger{% elif email.priority == 'medium' %}table-warning{% endif %}">
+                            <td>
+                                <input type="checkbox" class="form-check-input email-checkbox" value="{{ email.id }}" onchange="updateBulkActions()">
+                            </td>
+                            <td>
+                                <span class="badge {{ email.priority_badge_class }}">
+                                    {{ email.priority|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge {{ email.sentiment_badge_class }}">
+                                    {{ email.sentiment|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <small>{{ email.from_address[:25] }}{% if email.from_address|length > 25 %}...{% endif %}</small>
+                            </td>
+                            <td>
+                                <a href="{{ url_for('main.email_detail', email_id=email.id) }}" class="text-decoration-none">
+                                    <strong>{{ email.subject[:50] }}{% if email.subject|length > 50 %}...{% endif %}</strong>
+                                </a>
+                            </td>
+                            <td>
+                                <small>{{ email.received_at.strftime('%Y-%m-%d %H:%M') }}</small>
+                            </td>
+                            <td>
+                                <span class="badge {{ email.status_badge_class }}">
+                                    {{ email.status|title }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('main.email_detail', email_id=email.id) }}" 
+                                       class="btn btn-outline-primary" title="View">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    {% if email.generated_reply %}
+                                        <a href="{{ url_for('main.email_detail', email_id=email.id) }}#reply" 
+                                           class="btn btn-outline-success" title="View Reply">
+                                            <i class="bi bi-reply"></i>
+                                        </a>
+                                    {% endif %}
+                                    <button class="btn btn-outline-secondary" title="Flag" onclick="toggleFlag({{ email.id }})">
+                                        <i class="bi {% if email.is_flagged %}bi-flag-fill{% else %}bi-flag{% endif %}"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <nav aria-label="Email pagination">
+                <ul class="pagination justify-content-center">
+                    {% if emails.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main.emails_list', page=emails.prev_num, priority=priority_filter, sentiment=sentiment_filter, status=status_filter, search=search_query) }}">
+                                Previous
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                    {% endif %}
+                    
+                    {% for page_num in emails.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                        {% if page_num %}
+                            {% if page_num != emails.page %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('main.emails_list', page=page_num, priority=priority_filter, sentiment=sentiment_filter, status=status_filter, search=search_query) }}">
+                                        {{ page_num }}
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                            {% endif %}
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if emails.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('main.emails_list', page=emails.next_num, priority=priority_filter, sentiment=sentiment_filter, status=status_filter, search=search_query) }}">
+                                Next
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        {% else %}
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-1 text-muted"></i>
+                <h4 class="text-muted">No emails found</h4>
+                <p class="text-muted">Try adjusting your filters or fetch new emails.</p>
+                <button class="btn btn-primary" onclick="fetchEmails()">
+                    <i class="bi bi-cloud-download"></i> Fetch Emails
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+let selectedEmails = new Set();
+
+function toggleSelectAll() {
+    const checkboxes = document.querySelectorAll('.email-checkbox');
+    const selectAll = document.getElementById('selectAll').checked;
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.checked = selectAll;
+        if (selectAll) {
+            selectedEmails.add(parseInt(checkbox.value));
+        } else {
+            selectedEmails.delete(parseInt(checkbox.value));
+        }
+    });
+    
+    updateBulkActions();
+}
+
+function updateBulkActions() {
+    const checkboxes = document.querySelectorAll('.email-checkbox:checked');
+    selectedEmails.clear();
+    
+    checkboxes.forEach(checkbox => {
+        selectedEmails.add(parseInt(checkbox.value));
+    });
+    
+    const bulkActions = document.getElementById('bulkActions');
+    const selectedCount = document.getElementById('selectedCount');
+    
+    if (selectedEmails.size > 0) {
+        bulkActions.style.display = 'block';
+        selectedCount.textContent = selectedEmails.size;
+    } else {
+        bulkActions.style.display = 'none';
+    }
+}
+
+function bulkAction(action) {
+    if (selectedEmails.size === 0) return;
+    
+    fetch('{{ url_for("api.bulk_action") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+            
+        },
+        body: JSON.stringify({
+            email_ids: Array.from(selectedEmails),
+            action: action
+        })
+    }).then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              window.location.reload();
+          } else {
+              alert('Failed to perform bulk action');
+          }
+      });
+}
+
+function toggleFlag(emailId) {
+    fetch(`/api/emails/${emailId}/toggle_flag`, {
+        method: 'POST',
+        headers: {
+            
+        }
+    }).then(response => {
+        if (response.ok) {
+            window.location.reload();
+        }
+    });
+}
+
+function fetchEmails() {
+    if (confirm('Fetch new emails from your email server?')) {
+        fetch('{{ url_for("main.fetch_emails") }}', {
+            method: 'POST',
+            headers: {
+                
+            }
+        }).then(response => {
+            if (response.ok) {
+                window.location.reload();
+            } else {
+                alert('Failed to fetch emails. Please try again.');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0">Profile</h1>
+        <span class="text-muted small">Harshit's AI Assistant (MOTU.AI)</span>
+    </div>
+
+    <div class="row">
+        <!-- Left: basic info -->
+        <div class="col-lg-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    Account Details
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Username</label>
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ user.username if user else current_user.username }}"
+                                   disabled>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email"
+                                   class="form-control"
+                                   value="{{ user.email if user else current_user.email }}"
+                                   disabled>
+                            <div class="form-text">
+                                Ye woh email hai jisse tum login kar rahe ho.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Member Since</label>
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ (user.created_at if user else current_user.created_at)|default('N/A') }}"
+                                   disabled>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <a href="{{ url_for('auth.change_password') }}"
+                               class="btn btn-primary btn-sm">
+                                <i class="bi bi-key"></i> Change Password
+                            </a>
+
+                            <a href="{{ url_for('main.settings') }}"
+                               class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-gear"></i> Settings
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: quick stats -->
+        <div class="col-lg-6 mb-4">
+            <div class="card mb-4">
+                <div class="card-header">
+                    Usage Overview
+                </div>
+                <div class="card-body">
+                    <p class="mb-2">
+                        <strong>Total Emails:</strong> {{ total_emails if total_emails is defined else '0' }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>High Priority Emails:</strong> {{ high_priority_emails if high_priority_emails is defined else '0' }}
+                    </p>
+                    <p class="mb-2">
+                        <strong>Pending Replies:</strong> {{ pending_replies if pending_replies is defined else '0' }}
+                    </p>
+                    <p class="text-muted mb-0">
+                        We will update this section soon. For now all the values are shown as 0 by default.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    Security Info
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <strong>Session:</strong> You are currently logged in as
+                            <code>{{ user.username if user else current_user.username }}</code>.
+                        </li>
+                        <li class="mb-2">
+                            <i class="bi bi-info-circle text-primary"></i>
+                            Remember your password if you change it; you may lose access if you forget it.
+                        </li>
+                        <li class="mb-0 text-muted">
+                            We will add more functions soon.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{# Abhi profile page ko extra JS ki zarurat nahi #}
+{% endblock %}
